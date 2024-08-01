@@ -13,6 +13,7 @@
         <module>canal-spring-boot-starter</module>
         <module>canal-spring-boot-autoconfigure</module>
         <module>canal-example</module>
+
     </modules>
 
 

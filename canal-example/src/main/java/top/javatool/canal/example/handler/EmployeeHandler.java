@@ -1,6 +1,7 @@
 package top.javatool.canal.example.handler;
 
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -9,16 +10,20 @@ import top.javatool.canal.client.handler.EntryHandler;
 import top.javatool.canal.example.entity.SyncDO;
 import top.javatool.canal.example.mapper.SyncMapper;
 import top.javatool.canal.example.model.Employee;
+import top.javatool.canal.example.rocketmqListen.RmqProvdier;
+import top.javatool.canal.example.service.SyncService;
 
 import javax.annotation.Resource;
 
 
 @Component
 @CanalTable(value = "employee")
-public class EmployeeHandler implements EntryHandler<Employee> {
+public class EmployeeHandler extends RmqProvdier implements EntryHandler<Employee> {
 
     @Resource
     private SyncMapper syncMapper;
+    @Resource
+    private SyncService syncService;
     private Logger logger = LoggerFactory.getLogger(EmployeeHandler.class);
 
 
@@ -37,10 +42,14 @@ public class EmployeeHandler implements EntryHandler<Employee> {
         syncDO.setName("t_user表");
         syncDO.setTableName("t_user");
         syncDO.setDatabaseName("test1");
-        syncDO.setSetParams("[{\"value\":\"user_name\",\"column\":\"employee_name\"}]");
-        syncDO.setSearchParams("[{\"value\":\"id\",\"column\":\"employee_id\"}]");
-        syncMapper.insert(syncDO);
+        syncDO.setSetParams("1");
+        syncDO.setSearchParams("2");
+        this.send(JSONObject.toJSONString(syncDO));
+//            rocketMQTemplate.convertAndSend("test001", JSONObject.toJSONString(syncDO));
+//            syncService.removeById(syncDO.getId());
+//            employeeService.getById(syncDO.getRedundantSourceId());
     }
+
 
     @Override
     public void delete(Employee employee) {
