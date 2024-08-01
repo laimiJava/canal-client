@@ -1,14 +1,18 @@
+server:
+  port: 1234
 canal:
-  server: 192.168.0.80:11111
+  server: 192.168.133.130:11111
   destination: example
+  adminUser: admin
+  adminPasswd: 123456
 spring:
   application:
     name: canal-example
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.0.80:3306/test
-    username: root
-    password: 123456
+    url: jdbc:mysql://192.168.133.130:3306/test1
+    username: canal
+    password: Fbb@455445^
   jooq:
     sql-dialect: mysql
   flyway:
